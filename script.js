@@ -1,3 +1,6 @@
+// Name: Joshua Salazar
+// Async Data Simulation - Activates in Console
+
 // Simulated async functions to fetch user, posts, and comments
 
 function fetchUserProfile() {
@@ -72,7 +75,7 @@ async function getUserContentParallel() {
             if (c.error) {
                 console.error(`Error retrieving comments for Post ${c.postId}:`, c.error);
             } else {
-                console.log(`Comments for Post ${c[0]?.postId} retrieved:`, c);
+                console.log(`Comments for Post ${c[0]?.postId || 'Unknown'} retrieved:`, c);
             }
         });
 
@@ -81,8 +84,10 @@ async function getUserContentParallel() {
     }
 }
 
-// Call the primary function
-getUserContentSequential().then(() => {
-    console.log('\n--- Now fetching in parallel ---\n');
-    return getUserContentParallel();
-});
+// Automatically run both sequential and parallel fetches on page load or console start
+(async () => {
+    console.log('--- Starting Sequential Fetch ---');
+    await getUserContentSequential();
+    console.log('\n--- Starting Parallel Fetch ---');
+    await getUserContentParallel();
+})();
